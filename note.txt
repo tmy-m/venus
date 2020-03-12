@@ -1,0 +1,65 @@
+create table loaisanpham(
+	maloaisanpham char(5) primary key,
+	tenloaisanpham varchar(50) not null
+);
+
+create table thamso(
+    mathamso char(5) primary key,
+    tenthamso varchar(50) not null,
+    giatrithamso int  
+);
+
+create table nguonsanpham(
+    manguon char(5) primary key,
+    tennguon varchar(50) not null,
+    diachinguon varchar(100),
+    sdtnguon varchar(10) not null
+);
+
+create table sanpham(
+    masanpham char(5) primary key,
+    tensanpham varchar(50) not null,
+    giagoc int (check giagoc>0),
+    giaban int,
+    mota varchar(500) not null,
+    maloaisanpham char(5),
+    foreign key (maloaisanpham) references loaisanpham(maloaisanpham),
+    mathamso char(5),
+    foreign key (mathamso) references thamso(mathamso),
+    manguon char(5),
+    foreign key (manguon) references nguonsanpham(manguon)
+);
+
+create table khachhang(
+    makhachhang int auto_increment primary key,
+    tenkhachhang varchar(50) not null,
+    sdtkhachhang varchar(10) not null,
+    diachikhachhang varchar(100) not null,
+    emailkhachhang varchar(50) unique
+);
+
+create table hoadon(
+    mahoadon int auto_increment primary key,
+    makhachhang int,
+    foreign key (makhachhang) references khachhang(makhachhang),
+    ngaymua datetime,
+    thanhtien int
+);
+
+create table tinhtien(
+    mahoadon int,
+    masanpham char(5),
+    soluong int (check soluong >=1),
+    tongtien int,
+    foreign key (mahoadon) references hoadon(mahoadon),
+    foreign key (masanpham) references sanpham(masanpham)
+);
+
+create table taikhoan(
+    makhachhang char(5),
+    tendangnhap varchar(50),
+    matkhau varchar(50),
+    tentaikhoan varchar(20),
+    foreign key (makhachhang) references khachhang(makhachhang),
+    foreign key (tendangnhap) references khachhang(email)
+);
